@@ -1439,8 +1439,9 @@ extern int as_mysql_node_down(mysql_conn_t *mysql_conn,
 		   "on duplicate key update time_end=0, reason='%s';",
 		   mysql_conn->cluster_name, event_table,
 		   node_ptr->name, node_ptr->node_state,
-		   node_ptr->tres_str, event_time, my_reason, reason_uid,
-		   my_reason);
+		   node_ptr->tres_str, event_time,
+		   (my_reason ? my_reason : ""), reason_uid,
+		   (my_reason ? my_reason : ""));
 	if (debug_flags & DEBUG_FLAG_DB_EVENT)
 		DB_DEBUG(mysql_conn->conn, "query\n%s", query);
 	rc = mysql_db_query(mysql_conn, query);
