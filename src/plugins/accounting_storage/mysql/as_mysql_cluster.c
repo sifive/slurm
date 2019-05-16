@@ -1397,6 +1397,9 @@ extern int as_mysql_node_down(mysql_conn_t *mysql_conn,
 	else
 		my_reason = node_ptr->reason;
 
+	if (!my_reason)
+		my_reason = "";
+
 	row = mysql_fetch_row(result);
 	if (row && (node_ptr->node_state == slurm_atoul(row[0])) &&
 	    my_reason && row[1] &&
@@ -1440,8 +1443,8 @@ extern int as_mysql_node_down(mysql_conn_t *mysql_conn,
 		   mysql_conn->cluster_name, event_table,
 		   node_ptr->name, node_ptr->node_state,
 		   node_ptr->tres_str, event_time,
-		   (my_reason ? my_reason : ""), reason_uid,
-		   (my_reason ? my_reason : ""));
+		   my_reason, reason_uid,
+		   my_reason);
 	if (debug_flags & DEBUG_FLAG_DB_EVENT)
 		DB_DEBUG(mysql_conn->conn, "query\n%s", query);
 	rc = mysql_db_query(mysql_conn, query);
